@@ -82,5 +82,120 @@ function loadMainPrompts() {
         },
       ],
     },
-  ]);
+  ]).then((res) => {
+    let choice = res.choice;
+    switch (choice) {
+      case 'VIEW_EMPLOYEES':
+        viewEmployees();
+        break;
+      case 'VIEW_EMPLOYEES_BY_DEPARTMENT':
+        viewEmployeesByDepartment();
+        break;
+      case 'VIEW_EMPLOYEES_BY_MANAGER':
+        viewEmployeesByManager();
+        break;
+      case 'ADD_EMPLOYEE':
+        addEmployee();
+        break;
+      case 'REMOVE_EMPLOYEE':
+        removeEmployee();
+        break;
+      case 'UPDATE_EMPLOYEE_ROLE':
+        updateEmployeeRole();
+        break;
+      case 'UPDATE_EMPLOYEE_MANAGER':
+        updateEmployeeManager();
+        break;
+      case 'VIEW_DEPARTMENTS':
+        viewDepartments();
+        break;
+      case 'ADD_DEPARTMENT':
+        addDepartment();
+        break;
+      case 'REMOVE_DEPARTMENT':
+        removeDepartment();
+        break;
+      case 'VIEW_UTILIZED_BUDGET_BY_DEPARTMENT':
+        viewUtilizedBudgetByDepartment();
+        break;
+      case 'VIEW_ROLES':
+        viewRoles();
+        break;
+      case 'ADD_ROLE':
+        addRole();
+        break;
+      case 'REMOVE_ROLE':
+        removeRole();
+        break;
+      default:
+        quit();
+    }
+  });
+
+  //view  employees
+  function viewEmployees() {
+    db.findAllEmployees()
+      .then(([rows]) => {
+        let employees = rows;
+        console.log('\n');
+        console.table(employees);
+      })
+      .then(() => loadMainPrompts());
+  }
+
+  function viewEmployeesByDepartment() {
+    db.findAllDepartments().then(([rows]) => {
+      let departments = rows;
+      const departmentChoices = departments.map(({ id, name }) => ({
+        name: name,
+        value: id,
+      }));
+
+      prompt([
+        {
+          type: 'list',
+          name: 'departmentId',
+          message: 'Which department would you like to see employees for?',
+          choices: departmentChoices,
+        },
+      ])
+        .then((res) => db.findAllEmployeesByDepartment(res.departmentId))
+        .then(([rows]) => {
+          let employees = rows;
+          console.log('\n');
+          console.table(employees);
+        })
+        .then(() => loadMainPrompts());
+    });
+  }
+
+  function viewEmployeesByManager() {
+    db.findAllEmployees().then(([rows]) => {
+      let managers = rows;
+      const managerChoices = managers.map(({ id, first_name, last_name }) => ({
+        name: `${first_name} ${last_name}`,
+        value: id,
+      }));
+
+      prompt([
+        {
+          type: 'list',
+          name: 'managerId',
+          message: 'Which employee do you want to see direct reports for?',
+          choices: managerChoices,
+        },
+      ])
+        .then((res) => db.findAllEmployeesByManager(res.managerId))
+        .then(([rows]) => {
+          let employees = rows;
+          console.log('\n');
+          if (employees.length === 0) {
+            console.log('The selected employee has no direct reports');
+          } else {
+            console.table(employees);
+          }
+        })
+        .then(() => loadMainPrompts());
+    });
+  }
 }
