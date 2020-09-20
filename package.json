@@ -17,8 +17,10 @@
   },
   "homepage": "https://github.com/McClellan-Micah/employee-tracker#readme",
   "dependencies": {
+    "asciiart-logo": "^0.2.6",
     "console.table": "^0.10.0",
     "inquirer": "^7.3.3",
-    "mysql2": "^2.1.0"
+    "mysql2": "^2.1.0",
+    "node": "^14.11.0"
   }
 }
