@@ -24,7 +24,7 @@ WHEN I choose to add an employee
 THEN I am prompted to enter the employee’s first name, last name, role, and manager and that employee is added to the database
 
 WHEN I choose to update an employee role
-THEN I am prompted to select an employee to update and their new role and this information is updated in the database 
+THEN I am prompted to select an employee to update and their new role and this information is updated in the database
 
 ## Table of Contents
 
@@ -39,7 +39,7 @@ Clone the repo to your local machine. Open the application in your terminal and 
 
 ## Usage
 
-Link to the walkthrough video: 
+Link to the walkthrough video: https://drive.google.com/file/d/1aBU_P35sD5Qm9fRbbT5reaGO4MiVUwcp/view
 
 ## License
 
